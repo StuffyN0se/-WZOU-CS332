@@ -26,7 +26,7 @@ int main(int argc, char** argv) {
     if (isPrime(given_number)) {
         printf("The number %d is prime.\n", given_number);  
     } else {
-        printf("The number %d is not prime.\n", given_number);  
+        printf("The number  is not prime.\n", given_number);  
     }
     
     return 0;
