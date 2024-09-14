@@ -11,14 +11,17 @@ const char* isPrime(int num){
     if (num == 2) {                // 2 is the only even prime
         return"Prime Number\n";  
     }
-    for (int i = 2; i < num; i++){ 
-        if (num % i == 0) {        
-            int j = i;
-            while (j > 1){
-                j = j* j -1;
+    for (int i = 2; i < num; i++){   // divide num by all numbers greater than 2 to see if the num is divisible
+        if (num % i == 0) {          
+            int j = num;
+            int fact =  j;
+            while (j > 1){          //If it is divisble get facotrial
+                fact = fact* (j -1);
+                j-=1;
             }
-            return "Factorial :"; 
-            printf("%d\n", j);
+            printf("%d", fact);
+            return " is the Factorial :\n"; 
+            
         }
     }
     return "Prime Number\n";                   // return true is not divisible by any number
