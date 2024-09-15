@@ -12,7 +12,6 @@ char** readStr(int *numStr){
     strArr = malloc(*numStr * sizeof(char *));
     
     while(getchar() != '\n');
-
     printf("\n");
     for(int i = 0; i < *numStr; i++){
         printf("Enter word number %d: ", i + 1);
@@ -22,11 +21,6 @@ char** readStr(int *numStr){
         strArr[i] = malloc(length * sizeof(char));
         strcpy(strArr[i], input);
     }
-    printf("\nString Array:\n\n");
-    for(int i = 0; i < *numStr; i++){
-        printf("%s ", strArr[i]);
-    }
-    printf("\n");
     return strArr;
 }
 
@@ -43,9 +37,9 @@ void insertionSort(char** str, int numStr){
 }
 
 void displayStrings(char** str, int numStr) {
-    printf("\nSorted Strings:\n");
+    printf("\nSorted Strings: ");
     for (int i = 0; i < numStr; i++) {
-        printf("%s\n", str[i]);
+        printf("%s ", str[i]);
     }
 }
 
@@ -53,8 +47,8 @@ int main(int argc, char** argv){
     int numStr = 0;
     char **str = readStr(&numStr);
     insertionSort(str, numStr);
-    
     displayStrings(str, numStr);
+    printf("\n");
 
     // Free dynamically allocated memory
     for (int i = 0; i < numStr; i++) {
