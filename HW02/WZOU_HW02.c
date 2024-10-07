@@ -7,6 +7,14 @@
 #include <sys/stat.h>
 #include <dirent.h>
 
+/*
+Name: William Zou
+BlazerId: WZOU
+Project #: HW02?
+To compile: gcc -o WZOU_HW02 WZOU_HW02.c
+To run: ./WZOU_HW02 (options here) /workspaces/-WZOU-CS332/
+*/
+
 char *filetype(unsigned char type) {
     char *str;
     switch(type) {
