@@ -35,7 +35,7 @@ write(writeFileDescriptor, time_Start, strlen(time_Start));
 
 pid = fork();
 if (pid == 0) { /* this is child process */
-execl("../Lab02/Lab02","Lab02", (char *)NULL);
+execl("../Lab07/sampleHW","sampleHW", (char *)NULL);
 printf("If you see this statement then execl failed ;-(\n");
 perror("execl");
 exit(-1);
