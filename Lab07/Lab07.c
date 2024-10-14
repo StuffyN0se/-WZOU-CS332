@@ -1,7 +1,3 @@
-/* Simple program to illustrate the use of fork-exec-wait pattern.
-* To Compile: gcc -Wall forkexecl.c
-* To Run: ./a.out
-*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -21,7 +17,7 @@ char time_End[100];
 double duration;
 char time_duration[100];
 
-writeFileDescriptor = open("Output.txt", O_CREAT|O_WRONLY|O_APPEND, 0700);
+writeFileDescriptor = open("Output.log", O_CREAT|O_WRONLY|O_APPEND, 0700);  //opens or if the file doesnt exist create a output log 
 
 if (writeFileDescriptor == -1) {
     perror("Error opening file");
@@ -31,11 +27,12 @@ if (writeFileDescriptor == -1) {
 //starts timer
 start = time(NULL);
 snprintf(time_Start, sizeof(time_Start), "Time start: %s", ctime(&start));
+//write start time into the output
 write(writeFileDescriptor, time_Start, strlen(time_Start));
 
 pid = fork();
 if (pid == 0) { /* this is child process */
-execl("../Lab07/sampleHW","sampleHW", (char *)NULL);
+execl("../Lab07/sampleHW","sampleHW", (char *)NULL);                //execute file via filepath (used sampel HW1 provided in file)
 printf("If you see this statement then execl failed ;-(\n");
 perror("execl");
 exit(-1);
@@ -44,8 +41,10 @@ printf("Wait for the child process to terminate\n");
 wait(&status); /* wait for the child process to terminate */
 if (WIFEXITED(status)) { /* child process terminated normally */
 
+//record end time
 end = time(NULL);
 snprintf(time_End, sizeof(time_End), "\tTime end: %s", ctime(&end));
+//write end time into output file
 write(writeFileDescriptor, time_End, strlen(time_End));
 
 duration = difftime(end, start);
@@ -65,3 +64,9 @@ exit(EXIT_FAILURE);
 printf("[%ld]: Exiting program .....\n", (long)getpid());
 return 0;
 }
+/*
+This is output
+Time start: Mon Oct 14 02:41:22 2024
+	Time end: Mon Oct 14 02:41:22 2024
+Total Duration: 0.00 seconds
+*/
