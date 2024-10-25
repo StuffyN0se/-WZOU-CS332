@@ -33,7 +33,7 @@ void traverse_directory(const char *directory) {
     DIR *parentDir = opendir(directory);
 
     if (parentDir == NULL) {
-        printf ("Error opening directory '%s'\n", directory);
+        printf ("Error: Directory not found'%s'\n", directory);
         return;
     }
     while((dirent = readdir(parentDir)) != NULL){

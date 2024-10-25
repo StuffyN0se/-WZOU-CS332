@@ -34,7 +34,7 @@ void traverse_directory(const char *directory) {
     DIR *parentDir = opendir(directory);
 
     if (parentDir == NULL) {
-        printf ("Error opening directory '%s'\n", directory);
+        printf ("Error: Directory not found '%s'\n", directory);
         return;
     }
     while((dirent = readdir(parentDir)) != NULL){
@@ -53,7 +53,7 @@ void traverse_directory(const char *directory) {
         printf("If you see this statement then execl failed ;-(\n");
         exit(-1);
         } else if (pid > 0) { /* this is the parent process */
-        printf("Wait for the child process to terminate\n");
+        // printf("Wait for the child process to terminate\n");
         wait(&status); /* wait for the child process to terminate */
         if (WIFEXITED(status)) { /* child process terminated normally */
 
@@ -67,7 +67,7 @@ void traverse_directory(const char *directory) {
         perror("fork"); /* use perror to print the system error message */
         exit(EXIT_FAILURE);
         }
-        printf("[%ld]: Exiting program .....\n", (long)getpid());
+        // printf("[%ld]: Exiting program .....\n", (long)getpid());
     }
 
 closedir (parentDir);
@@ -76,7 +76,6 @@ closedir (parentDir);
 int main(int argc, char **argv) {
 
 pid_t pid;
-
 
 if (argc < 2) {
         printf("Usage: %s <directory>\n", argv[0]);
