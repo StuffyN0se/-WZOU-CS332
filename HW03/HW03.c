@@ -26,7 +26,7 @@ char *filetype(unsigned char type) {
 }
 pid_t pid;
 int status;
-
+//traverse direcotory function
 void traverse_directory(const char *directory) {
     //creates strut to store directories
     struct dirent *dirent;
@@ -47,27 +47,24 @@ void traverse_directory(const char *directory) {
         snprintf(filePath, sizeof(filePath), "%s/%s", directory, dirent->d_name);
         
         pid = fork();
-        if (pid == 0) { /* this is child process */
+        if (pid == 0) { 
         execl("../HW03/printInfo", "printInfo", filePath, (char *)NULL);
         perror("execl"); // If execl fails, print an error
         printf("If you see this statement then execl failed ;-(\n");
         exit(-1);
-        } else if (pid > 0) { /* this is the parent process */
+        } else if (pid > 0) { 
         // printf("Wait for the child process to terminate\n");
-        wait(&status); /* wait for the child process to terminate */
-        if (WIFEXITED(status)) { /* child process terminated normally */
+        wait(&status);
+        if (WIFEXITED(status)) { 
 
         printf("Child process exited with status = %d\n", WEXITSTATUS(status));
-        } else { /* child process did not terminate normally */
+        } else { 
         printf("Child process did not terminate normally!\n");
-        /* look at the man page for wait (man 2 wait) to determine
-        how the child process was terminated */
         }
-        } else { /* we have an error */
+        } else { 
         perror("fork"); /* use perror to print the system error message */
         exit(EXIT_FAILURE);
         }
-        // printf("[%ld]: Exiting program .....\n", (long)getpid());
     }
 
 closedir (parentDir);

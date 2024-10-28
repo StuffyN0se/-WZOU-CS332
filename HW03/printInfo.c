@@ -25,8 +25,9 @@ char *filetype(unsigned char type) {
     }
     return str;
 }
-
+//function to count words
 int countWords(const char *filePath) {
+    //opens file given by main
     FILE *file = fopen(filePath, "r");
     if (!file) {
         perror("fopen");
@@ -34,12 +35,12 @@ int countWords(const char *filePath) {
     }
 
     int wordCount = 0;
-    char c;
+    char character;
     int inWord = 0;
-
-    while ((c = fgetc(file)) != EOF) {
-        if (isspace(c)) {
-            if (inWord) {
+    //while 
+    while ((character = fgetc(file)) != EOF) {
+        if (isspace(character)) { // Check if the character is space
+            if (inWord) {         // if we are in a word add to count
                 wordCount++;
                 inWord = 0; 
             }
