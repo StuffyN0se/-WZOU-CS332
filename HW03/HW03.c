@@ -8,6 +8,13 @@
 #include <string.h>
 #include <dirent.h>
 
+/*
+Name: William Zou
+BlazerId: WZOU
+Project #: Hw03
+To compile: gcc -o HW03 HW03.c
+To run: ./HW03 plus any file path
+*
 
 char *filetype(unsigned char type) {
     char *str;
