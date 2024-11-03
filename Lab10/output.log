@@ -1,4 +1,3 @@
-echo "Hello from the test file!"	Sat Nov  2 23:24:28 2024	Sat Nov  2 23:24:28 2024
-ls -l	Sat Nov  2 23:24:28 2024	Sat Nov  2 23:24:28 2024
-date	Sat Nov  2 23:24:28 2024	Sat Nov  2 23:24:28 2024
-whoam	Sat Nov  2 23:24:28 2024	Sat Nov  2 23:24:28 2024
+echo "Hello from the test file!"	Sun Nov  3 23:20:25 2024	Sun Nov  3 23:20:25 2024
+ls -l	Sun Nov  3 23:20:25 2024	Sun Nov  3 23:20:25 2024
+date	Sun Nov  3 23:20:25 2024	Sun Nov  3 23:20:25 2024
