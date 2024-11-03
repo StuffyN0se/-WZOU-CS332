@@ -29,19 +29,6 @@ int main(int argc, char **argv) {
         printf("Usage: %s <commands file>\n", argv[0]);
         exit(-1);
     }
-    /* open file to read standard input stream,
-    make sure the file stdin.txt exists, even if it is empty */
-    if ((output = open("output.txt", O_CREAT | O_APPEND | O_WRONLY, 0755)) == -1) {
-	printf("Error opening file output.txt for output\n");
-	exit(-1);
-	}
-     /* open file to write standard output stream in append mode.
-     create a new file if the file does not exist. */
-     if ((input = open("error.txt", O_CREAT | O_APPEND | O_WRONLY, 0755)) == -1) {
-	printf("Error opening file error.txt for error\n");
-	exit(-1);
-     }
-
     FILE *fp1 = fopen(argv[1],"r");
     if (fp1 == NULL) {
 	printf("Error opening file %s for reading\n", argv[1]);
@@ -67,28 +54,31 @@ int main(int argc, char **argv) {
       time(&t1);
       pid = fork();
       if (pid == 0) { /* this is child process */
-	      
+	// Construct filenames for output and error using the child PID
+	  char out_filename[20], err_filename[20];
+	  snprintf(out_filename, sizeof(out_filename), "%d.out", getpid());
+	  snprintf(err_filename, sizeof(err_filename), "%d.err", getpid());
+
+        // Open output and error files
+        int fd_out = open(out_filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+        int fd_err = open(err_filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+        if (fd_out == -1 || fd_err == -1) {
+		perror("Error opening output/error files");
+	        exit(-1);
+        }
 	/* replace standard input stream with the file stdin.txt */
-	dup2(output, 1);
+	dup2(fd_out, 1);
 	/* replace standard output stream with the file stdout.txt */
-	dup2(error, 2);
+	dup2(fd_err, 2);
+	// Close original file descriptors
+	close(fd_out); 
+        close(fd_err);
+	
 	execvp(argv[1], &argv[1]);
-	/* since stdout is written to stdout.txt and not the terminal,
-	we should write to stderr in case exec fails, we use perror
-	that writes the error message to stderr */
-
 	perror("exec");
 	exit(-1);
-	} else if (pid > 0) { /* this is the parent process */
-	/* output from the parent process still goes to stdout :-) */
-	printf("Wait for the child process to terminate\n");
-	wait(&status); /* wait for the child process to terminate */
-	if (WIFEXITED(status)) { /* child process terminated normally */
-
-        execvp(args[0], args);
-	perror("exec");
-	exit(-1);
-      } else if (pid > 0) { /* this is the parent process */
+      	}
+      	else if (pid > 0) { /* this is the parent process */
         printf("Child started at %s", ctime(&t1));
         printf("Wait for the child process to terminate\n");
         wait(&status); /* wait for the child process to terminate */
