@@ -19,6 +19,7 @@ int main(int argc, char **argv){
         else{
             printf("The input is %s\n", input);
         }
+        popen()
     }
     return 0;
 }
