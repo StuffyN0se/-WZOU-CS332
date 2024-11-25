@@ -21,10 +21,10 @@ void* generate (void *arg){
     }
 
     pthread_mutex_lock(&mutex);                     //give thread access
-    if (write(pipefd[1], numbers, sizeof(int) * 500) == -1){   //passes the integers in the array numbers into the pipe
-        perror("Error writing to pipe");
-        pthread_mutex_unlock(&mutex);
-        pthread_exit(NULL);
+
+    ssize_t bytes_written = write(pipefd[1], numbers, sizeof(int) * 500);
+    if (bytes_written != sizeof(int) * 500) {
+        fprintf(stderr, "Error: Incomplete write. Only %ld bytes written\n", bytes_written);
     }
     pthread_mutex_unlock(&mutex);                   //take away access
 
@@ -37,6 +37,8 @@ void* sum (void* arg){
     int numbers[150];                      //create int array to store the 150 numbers
     int sum = 0;
 
+    pthread_mutex_lock(&mutex); 
+
     int read_num = read(pipefd[0], numbers, sizeof(int) * 150);     //read 150 numbers from the pipe based on bytes. So the function is reading 600 bytes of data.
     if (read_num == -1){
         perror("Error reading from pipe");
@@ -46,6 +48,9 @@ void* sum (void* arg){
     else if (read_num != sizeof(int)* 150){
         perror("Error : Did not recieve 150 integers\n");
     }
+
+    pthread_mutex_unlock(&mutex);
+
     // loop to add all the nubmers up if 150 integers is recieved
     for (int i = 0; i <150; i++){
             sum += numbers[i];
@@ -59,6 +64,8 @@ void* sum (void* arg){
 }
 
 int main (int argc, char **argv ) {
+    srand(time(NULL)); // prevents same nubmers from being generated
+
     if(pipe(pipefd) == -1){
         perror("Error creating pipe");
         exit(EXIT_FAILURE);
@@ -91,6 +98,8 @@ int main (int argc, char **argv ) {
     else if (pid == 0){                 //checks to see if process is the child
         //child processes here
         close(pipefd[1]);
+
+        usleep(100);                       //makes a delay for child before reading from pipe to avoid error
 
         FILE* fp = fopen("output.txt","w");             //opens file for write
         if (fp == NULL) {
